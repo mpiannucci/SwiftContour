@@ -11,11 +11,18 @@ let package = Package(
             name: "SwiftContour",
             targets: ["SwiftContour"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/kiliankoe/GeoJSON", .upToNextMajor(from: "0.6.2")),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "SwiftContour"),
+            name: "SwiftContour",
+            dependencies: [
+                "GeoJSON"
+            ]
+        ),
         .testTarget(
             name: "SwiftContourTests",
             dependencies: ["SwiftContour"]),
