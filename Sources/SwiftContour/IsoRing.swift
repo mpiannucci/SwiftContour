@@ -235,21 +235,17 @@ public struct IsoRingBuilder {
         let startIndex = self.index(point: start)
         let endIndex = self.index(point: end)
         
-        if self.fragment_by_end.keys.contains(startIndex) {
-            if self.fragment_by_start.keys.contains(endIndex) {
-                let f_ix = self
-                    .fragment_by_end
-                    .removeValue(forKey: startIndex)
-                let g_ix = self
-                    .fragment_by_start
-                    .removeValue(forKey: endIndex)
-                if let f_ix = f_ix, f_ix == g_ix {
-                    var f = self.f.remove(at: f_ix)
+        if let f_ix = self.fragment_by_end[startIndex] {
+            if let g_ix = self.fragment_by_start[endIndex] {
+                self.fragment_by_end.removeValue(forKey: startIndex)
+                self.fragment_by_start.removeValue(forKey: endIndex)
+                if f_ix == g_ix {
+                    var f = self.f[f_ix]
                     f.ring.append(end);
                     result.append(f.ring);
-                } else if let f_ix = f_ix, let g_ix = g_ix {
-                    var f = self.f.remove(at: f_ix)
-                    let g = self.f.remove(at: g_ix)
+                } else {
+                    var f = self.f[f_ix]
+                    let g = self.f[g_ix]
                     f.ring.append(contentsOf: g.ring)
                     let ix = self.f.count
                     self.f.append(Fragment(
@@ -261,30 +257,22 @@ public struct IsoRingBuilder {
                     self.fragment_by_end[g.end] = ix
                 }
             } else {
-                let f_ix = self
-                    .fragment_by_end
-                    .removeValue(forKey: startIndex)
-                if let f_ix = f_ix {
-                    self.f[f_ix].ring.append(end)
-                    self.f[f_ix].end = endIndex
-                    self.fragment_by_end[endIndex] = f_ix
-                }
+                self.fragment_by_end.removeValue(forKey: startIndex)
+                self.f[f_ix].ring.append(end)
+                self.f[f_ix].end = endIndex
+                self.fragment_by_end[endIndex] = f_ix
             }
-        } else if self.fragment_by_start.keys.contains(endIndex) {
-            if self.fragment_by_end.keys.contains(startIndex) {
-                let f_ix = self
-                    .fragment_by_start
-                    .removeValue(forKey: endIndex)
-                let g_ix = self
-                    .fragment_by_end
-                    .removeValue(forKey: startIndex)
-                if let f_ix = f_ix, let g_ix = g_ix, f_ix == g_ix {
-                    var f = self.f.remove(at: f_ix)
+        } else if let f_ix = self.fragment_by_start[endIndex] {
+            if let g_ix = self.fragment_by_end[startIndex] {
+                self.fragment_by_start.removeValue(forKey: endIndex)
+                self.fragment_by_end.removeValue(forKey: startIndex)
+                if f_ix == g_ix {
+                    var f = self.f[f_ix]
                     f.ring.append(end)
                     result.append(f.ring)
-                } else if let f_ix = f_ix, let g_ix = g_ix {
-                    let f = self.f.remove(at: f_ix)
-                    var g = self.f.remove(at: g_ix)
+                } else {
+                    let f = self.f[f_ix]
+                    var g = self.f[g_ix]
                     g.ring.append(contentsOf: f.ring);
                     let ix = self.f.count
                     self.f.append(Fragment(
@@ -296,15 +284,10 @@ public struct IsoRingBuilder {
                     self.fragment_by_end[f.end] = ix
                 }
             } else {
-                let f_ix = self
-                    .fragment_by_start
-                    .removeValue(forKey: endIndex)
-                
-                if let f_ix = f_ix {
-                    f[f_ix].ring.insert(start, at: 0)
-                    f[f_ix].start = startIndex;
-                    self.fragment_by_start[startIndex] = f_ix
-                }
+                self.fragment_by_start.removeValue(forKey: endIndex)
+                f[f_ix].ring.insert(start, at: 0)
+                f[f_ix].start = startIndex;
+                self.fragment_by_start[startIndex] = f_ix
             }
         } else {
             let ix = self.f.count
