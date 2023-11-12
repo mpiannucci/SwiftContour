@@ -42,3 +42,27 @@ public struct Fragment {
 public enum ContourError: Error {
     case dimensionError
 }
+
+public struct Slab<T> {
+    var inner: [Int:T] = [:]
+    private var counter = 0
+    
+    public func get(at index: Int) -> T? {
+        return self.inner[index]
+    }
+    
+    public mutating func put(item: T) -> Int {
+        counter += 1
+        inner[counter] = item
+        return counter
+    }
+    
+    public mutating func pop(at index: Int) -> T? {
+        self.inner.removeValue(forKey: index)
+    }
+    
+    public mutating func clear() {
+        counter = 0
+        inner.removeAll()
+    }
+}

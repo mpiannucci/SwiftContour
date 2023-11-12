@@ -108,7 +108,7 @@ let CASES = [
 public struct IsoRingBuilder {
     var fragment_by_start: [Int:Int]
     var fragment_by_end: [Int:Int]
-    var f: [Fragment]
+    var f: Slab<Fragment>
     let dx: Int
     let dy: Int
     var isEmpty: Bool
@@ -121,7 +121,7 @@ public struct IsoRingBuilder {
     init(dx: Int, dy: Int) {
         self.fragment_by_start = [:]
         self.fragment_by_end = [:]
-        self.f = []
+        self.f = Slab()
         self.dx = dx
         self.dy = dy
         self.isEmpty = true
@@ -240,15 +240,14 @@ public struct IsoRingBuilder {
                 self.fragment_by_end.removeValue(forKey: startIndex)
                 self.fragment_by_start.removeValue(forKey: endIndex)
                 if f_ix == g_ix {
-                    var f = self.f[f_ix]
+                    var f = self.f.pop(at: f_ix)!
                     f.ring.append(end);
                     result.append(f.ring);
                 } else {
-                    var f = self.f[f_ix]
-                    let g = self.f[g_ix]
+                    var f = self.f.pop(at: f_ix)!
+                    let g = self.f.pop(at: g_ix)!
                     f.ring.append(contentsOf: g.ring)
-                    let ix = self.f.count
-                    self.f.append(Fragment(
+                    let ix = self.f.put(item: Fragment(
                         start: f.start,
                         end: g.end,
                         ring: f.ring
@@ -258,8 +257,8 @@ public struct IsoRingBuilder {
                 }
             } else {
                 self.fragment_by_end.removeValue(forKey: startIndex)
-                self.f[f_ix].ring.append(end)
-                self.f[f_ix].end = endIndex
+                self.f.inner[f_ix]?.ring.append(end)
+                self.f.inner[f_ix]?.end = endIndex
                 self.fragment_by_end[endIndex] = f_ix
             }
         } else if let f_ix = self.fragment_by_start[endIndex] {
@@ -267,31 +266,29 @@ public struct IsoRingBuilder {
                 self.fragment_by_start.removeValue(forKey: endIndex)
                 self.fragment_by_end.removeValue(forKey: startIndex)
                 if f_ix == g_ix {
-                    var f = self.f[f_ix]
+                    var f = self.f.pop(at: f_ix)!
                     f.ring.append(end)
                     result.append(f.ring)
                 } else {
-                    let f = self.f[f_ix]
-                    var g = self.f[g_ix]
+                    let f = self.f.pop(at: f_ix)!
+                    var g = self.f.pop(at: g_ix)!
                     g.ring.append(contentsOf: f.ring);
-                    let ix = self.f.count
-                    self.f.append(Fragment(
+                    let ix = self.f.put(item: Fragment(
                         start: g.start,
                         end: f.end,
                         ring: g.ring
-                    ));
+                    ))
                     self.fragment_by_start[g.start] = ix
                     self.fragment_by_end[f.end] = ix
                 }
             } else {
                 self.fragment_by_start.removeValue(forKey: endIndex)
-                f[f_ix].ring.insert(start, at: 0)
-                f[f_ix].start = startIndex;
+                f.inner[f_ix]?.ring.insert(start, at: 0)
+                f.inner[f_ix]?.start = startIndex;
                 self.fragment_by_start[startIndex] = f_ix
             }
         } else {
-            let ix = self.f.count
-            self.f.append(Fragment(
+            let ix = self.f.put(item: Fragment(
                 start: startIndex,
                 end: endIndex,
                 ring: [start, end]
@@ -302,7 +299,7 @@ public struct IsoRingBuilder {
     }
     
     public mutating func clear() {
-        self.f.removeAll()
+        self.f.clear()
         self.fragment_by_end.removeAll()
         self.fragment_by_start.removeAll()
         self.isEmpty = true;
