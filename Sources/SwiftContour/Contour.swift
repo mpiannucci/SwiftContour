@@ -12,7 +12,7 @@ import AnyCodable
 /// Contours generator, using builder pattern, to
 /// be used on a rectangular `Slice` of values
 ///
-struct ContourBuilder {
+public struct ContourBuilder {
     /// The number of columns in the grid
     let dx: Int
     /// The number of rows in the grid
@@ -28,7 +28,7 @@ struct ContourBuilder {
     /// The vertical step for the grid
     let yStep: Double
     
-    init(dx: Int, dy: Int, smooth: Bool, xOrigin: Double = 0.0, yOrigin: Double = 0.0, xStep: Double = 1.0, yStep: Double = 1.0) {
+    public init(dx: Int, dy: Int, smooth: Bool, xOrigin: Double = 0.0, yOrigin: Double = 0.0, xStep: Double = 1.0, yStep: Double = 1.0) {
         self.dx = dx
         self.dy = dy
         self.smooth = smooth
