@@ -20,13 +20,23 @@ struct ContourBuilder {
     /// Whether to smooth the contours
     let smooth: Bool
     /// The horizontal coordinate for the origin of the grid.
-    let x_origin: Double
+    let xOrigin: Double
     /// The vertical coordinate for the origin of the grid.
-    let y_origin: Double
+    let yOrigin: Double
     /// The horizontal step for the grid
-    let x_step: Double
+    let xStep: Double
     /// The vertical step for the grid
-    let y_step: Double
+    let yStep: Double
+    
+    init(dx: Int, dy: Int, smooth: Bool, xOrigin: Double = 0.0, yOrigin: Double = 0.0, xStep: Double = 1.0, yStep: Double = 1.0) {
+        self.dx = dx
+        self.dy = dy
+        self.smooth = smooth
+        self.xOrigin = xOrigin
+        self.yOrigin = yOrigin
+        self.xStep = xStep
+        self.yStep = yStep
+    }
     
     func smoooth_linear(ring: inout Ring, values: [Double], value: Double) {
         let len_values = values.count
@@ -68,7 +78,7 @@ struct ContourBuilder {
             
             // Compute the polygon coordinates according to the grid properties if needed
             let line: [Position] = result[index].map{point in
-                return Position(longitude: point.x * self.x_step + self.x_origin, latitude: point.y * self.y_step + self.y_origin)
+                return Position(longitude: point.x * self.xStep + self.xOrigin, latitude: point.y * self.yStep + self.yOrigin)
             }
             
             linestrings.append(try LineString(coordinates: line))
@@ -78,7 +88,7 @@ struct ContourBuilder {
     }
     
     /// Computes isolines according the given input `values` and the given `thresholds`.
-    /// Returns a `Vec` of GeoJSON Features of MultiLineString
+    /// Returns an `Array` of GeoJSON Features of MultiLineString
     /// The threshold value of each Feature is stored in its `value` property.
     ///
     /// # Arguments
@@ -120,7 +130,7 @@ struct ContourBuilder {
             
             // Compute the polygon coordinates according to the grid properties if needed
             let ring: Ring = result[index].map{point in
-                return Pt(x: point.x * self.x_step + self.x_origin, y: point.y * self.y_step + self.y_origin)
+                return Pt(x: point.x * self.xStep + self.xOrigin, y: point.y * self.yStep + self.yOrigin)
             }
             
             if area(ring: ring) > 0.0 {

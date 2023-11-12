@@ -3,7 +3,7 @@ import XCTest
 
 final class SwiftContourTests: XCTestCase {
     func testEmpty() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 0.0, y_origin: 0.0, x_step: 1.0, y_step: 1.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -39,7 +39,7 @@ final class SwiftContourTests: XCTestCase {
     }
     
     func testSimplePolygon() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 0.0, y_origin: 0.0, x_step: 1.0, y_step: 1.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -64,7 +64,7 @@ final class SwiftContourTests: XCTestCase {
     }
     
     func testPolygonWithHole() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 0.0, y_origin: 0.0, x_step: 1.0, y_step: 1.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -89,7 +89,7 @@ final class SwiftContourTests: XCTestCase {
     }
     
     func testMultiPolygon() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 0.0, y_origin: 0.0, x_step: 1.0, y_step: 1.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -113,7 +113,7 @@ final class SwiftContourTests: XCTestCase {
     }
     
     func testMultiPolygonWithHole() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 0.0, y_origin: 0.0, x_step: 1.0, y_step: 1.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -137,7 +137,7 @@ final class SwiftContourTests: XCTestCase {
     }
     
     func testMultipleThresholds() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 0.0, y_origin: 0.0, x_step: 1.0, y_step: 1.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -156,7 +156,7 @@ final class SwiftContourTests: XCTestCase {
     }
     
     func testMultiPolygonWithXYSteps() throws {
-        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, x_origin: 100.0, y_origin: 200.0, x_step: 2.0, y_step: 2.0)
+        let builder = ContourBuilder(dx: 10, dy: 10, smooth: true, xOrigin: 100.0, yOrigin: 200.0, xStep: 2.0, yStep: 2.0)
         let data = [
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
