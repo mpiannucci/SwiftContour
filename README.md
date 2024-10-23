@@ -26,8 +26,8 @@ let values = [
 ]
 
 // Compute filled MultiPolygons
-let contours: [Feature] = try contours(values: data, width: 10, height: 10, thresholds: [0.5], smoothing: true)
+let contours: [Feature] = try contours(values: data, width: 5, height: 5, thresholds: [0.5], smoothing: true)
 
 // Compute MultiLineString Outlines
-let lines: [Feature] = try lines(values: data, width: 10, height: 10, thresholds: [0.5], smoothing: true)
+let lines: [Feature] = try lines(values: data, width: 5, height: 5, thresholds: [0.5], smoothing: true)
 ```
